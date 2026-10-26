@@ -1,11 +1,11 @@
 
 import streamlit as st
-from openai import OpenAI
+from groq import Groq
 
 st.set_page_config(page_title="Mamba Admin v1", page_icon="🤖", layout="centered")
 
-st.title("🤖 Mamba Admin v1")
-st.caption("Votre assistant administratif virtuel tout-en-un")
+st.title("🤖 Mamba Admin v1 (Mode Gratuit)")
+st.caption("Votre assistant administratif virtuel propulsé par Groq")
 
 SYSTEM_PROMPT = """
 Tu es "Mamba Admin v1", un Assistant Administratif Virtuel Tout-en-un.
@@ -18,15 +18,15 @@ Si l'utilisateur ne précise pas le mode, demande-lui de choisir entre 1, 2 ou 3
 Sois toujours professionnel, rigoureux et précis.
 """
 
-# Barre latérale pour la clé API
-api_key = st.sidebar.text_input("Clé API OpenAI :", type="password")
+# Barre latérale pour la clé API Groq (gratuite sur console.groq.com)
+api_key = st.sidebar.text_input("Clé API Groq :", type="password")
 
 if not api_key:
-    st.info("💡 Veuillez entrer votre clé API OpenAI dans le panneau de gauche pour commencer.")
+    st.info("💡 Pour utiliser l'assistant gratuitement, créez un compte sur **console.groq.com** (c'est gratuit) pour récupérer votre clé API et la coller ici.")
     st.stop()
 
-# Initialisation du client OpenAI
-client = OpenAI(api_key=api_key)
+# Initialisation du client Groq
+client = Groq(api_key=api_key)
 
 # Gestion de la session de messagerie
 if "messages" not in st.session_state:
@@ -49,7 +49,7 @@ if user_input := st.chat_input("Écrivez votre message..."):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama-3.1-8b-instant",
             messages=st.session_state.messages
         )
         bot_reply = response.choices[0].message.content
