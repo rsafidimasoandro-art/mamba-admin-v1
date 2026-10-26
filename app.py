@@ -49,7 +49,7 @@ if user_input := st.chat_input("Écrivez votre message..."):
 
     try:
         response = client.chat.completions.create(
-            model= llama-3.2-3b-preview
+            model= llama-3.2-3b-preview,
             messages=st.session_state.messages
         )
         bot_reply = response.choices[0].message.content
